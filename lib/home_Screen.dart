@@ -268,7 +268,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 90),
-          Container(margin: EdgeInsets.all(8),
+          Container(
+            margin: EdgeInsets.all(8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -281,7 +282,43 @@ class _HomeScreenState extends State<HomeScreen> {
                   foregroundColor: Color(0xFFFFFFFF),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(80)),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("What do you need?"),
+                          content: Row(
+                            children: [
+                              Text(
+                                'New Notes?',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(width: 5,),
+                              Icon(Icons.note_add, color: Colors.black,),
+                              SizedBox(width: 30,),
+                              Icon(Icons.add, color: Colors.black)
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pop();
+                              },
+                              child: Text("Done",style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: Colors.black)),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: Icon(Icons.add),
                 )
               ],
