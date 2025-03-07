@@ -45,6 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFF1F1F1F),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF1F1F1F)),
+                      borderRadius: BorderRadius.circular(9)),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFF1F1F1F)),
                       borderRadius: BorderRadius.circular(9)),
@@ -267,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          SizedBox(height: 90),
+          SizedBox(height: 22),
           Container(
             margin: EdgeInsets.all(8),
             child: Row(
