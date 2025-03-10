@@ -1,5 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onboarding_screen/log_out.dart';
+import 'package:onboarding_screen/profile.dart';
+import 'package:onboarding_screen/settings.dart';
+import 'package:onboarding_screen/sign_In.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,10 +40,45 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.white,
                             fontSize: 50,
                             fontWeight: FontWeight.w400)),
-                    Icon(
-                      Icons.tune,
-                      color: Colors.white,
-                    )
+                    PopupMenuButton(
+                      color: Color(0xFF1F1F1F),
+                      icon: Icon(Icons.tune,
+                          color: Colors.white,),
+                        onSelected: (value) {
+                         if (value == 'log Out')  {
+                            FirebaseAuth.instance.signOut();
+                            GoogleSignIn().signOut();
+                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LogOut()));
+                         } else if (value == 'settings'){
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>Settings() ));
+                         } else if (value== 'profile'){
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
+                         };
+                        },
+                        itemBuilder: (context)=>[
+                          PopupMenuItem(
+                              value: 'log Out',
+                              child: Text('Log Out', style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20,
+                                  color: Colors.white))),
+                          PopupMenuItem(
+                              value: 'settings',
+                              child: Text('Settings', style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20,
+                                  color: Colors.white))),
+                          PopupMenuItem(
+                              value: 'profile',
+                              child: Text('Profile', style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20,
+                                  color: Colors.white)))
+                        ])
+                    // Icon(
+                    //   Icons.tune,
+                    //   color: Colors.white,
+                    // )
                   ],
                 ),
               ),
