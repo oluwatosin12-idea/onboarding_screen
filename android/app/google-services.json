@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "919315527962",
+    "project_id": "onboarding-screen-6c20f",
+    "storage_bucket": "onboarding-screen-6c20f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919315527962:android:1aa053d76210221791d4a3",
+        "android_client_info": {
+          "package_name": "com.example.onboarding_screen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919315527962-29jb6b8d6j340addm5t53u7svk4j71gq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwgn64Jc8w1LKwUzzi-6Q3VtqCWyeqPJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919315527962-29jb6b8d6j340addm5t53u7svk4j71gq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
