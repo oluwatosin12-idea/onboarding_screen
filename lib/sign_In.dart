@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:onboarding_screen/TextField/email_Password.dart';
 import 'package:onboarding_screen/controllers/user_controller.dart';
+import 'package:onboarding_screen/google_Facebook_signIn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_Screen.dart';
@@ -16,7 +18,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   TextEditingController _passwordController = TextEditingController();
-  bool _isObscured = true;
+  // bool _isObscured = true;
   bool _isChecked = false;
   bool _rememberMe = false;
 
@@ -51,218 +53,111 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 25),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        children:[ Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 60, horizontal: 30)),
+                  Text('Welcome back!',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black)),
+                  Text(
+                    'Please login to your account to continue',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            SizedBox(height: 40,
+                child: GoogleFacebookSignin()),
+            SizedBox(height: 250,
+                child: EmailPassword()),
+            Row(
               children: [
                 Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 60, horizontal: 30)),
-                Text('Welcome back!',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black)),
+                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10)),
+                Checkbox(
+                    value: _isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isChecked = value ?? false;
+                      });
+                    }),
                 Text(
-                  'Please login to your account to continue',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                  style:
-                  ButtonStyle(
-                    minimumSize: MaterialStateProperty.all<Size>(Size(162, 56)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(color: Color(0xFF585252))
-
-                          ),
-                         ),
-                  ),
-                  onPressed: () {},
-                  child: Row(
-                    children: [
-                      Image(image: AssetImage('assets/images/facebook.png')),
-                      SizedBox(width: 7,),
-                      Text('Facebook',
-                          style: TextStyle(
-                              color: Color(0xFF585252),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500))
-                    ],
-                  )),
-              ElevatedButton(
-                  style:
-                  ButtonStyle(
-                    minimumSize: MaterialStateProperty.all<Size>(Size(162, 56)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(color: Color(0xFF585252))
-
-                      ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    try{
-                      final user = await UserController.loginWithGoogle();
-                      if(user != null && mounted){
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>HomeScreen()));
-                      }
-                    } on FirebaseAuthException catch(error){
-                      print(error.message);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.message?? 'something went wrong')));
-
-                    }catch (error) {
-                      print (error);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error.toString())));
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      Image(image: AssetImage('assets/images/googleIcon.png')),
-                      SizedBox(width: 7,),
-                      Text('Google',
-                          style: TextStyle(
-                              color: Color(0xFF585252),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500))
-                    ],
-                  ))
-
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.all(30),
-            child: Column(
-              children: [
-                Padding(padding: EdgeInsets.all(15)),
-                TextField(
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Color(0xFF585252)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Color(0xFF585252)),
-                      ),
-                      hintText: 'johnsonjohn@gmail.com',
-                      hintStyle: TextStyle(color: Colors.black),
-                      labelText: 'Email'),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Color(0xFF585252)),
-                    ),
-                    hintStyle: TextStyle(color: Colors.black),
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _isObscured = !_isObscured;
-                          });
-                        },
-                        icon: Icon(_isObscured
-                            ? Icons.visibility_off
-                            : Icons.visibility)),
-                  ),
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: _isObscured,
-                ),
-              ],
-            ),
-          ),
-          Row(
-            children: [
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10)),
-              Checkbox(
-                  value: _isChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _isChecked = value ?? false;
-                    });
-                  }),
-              Text(
-                'Remember me',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF585252)),
-              ),
-              SizedBox(
-                width: 120,
-              ),
-              Text('Forgot Password?',
+                  'Remember me',
                   style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF585252)))
-            ],
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Column(
-            children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF2A63B9),
-                      minimumSize: Size(287, 50),
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
-                  },
-                  child: Text('Log In',
-                      style: TextStyle(fontSize: 20, color: Colors.white))),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Don’t have an account?',
-                      style: TextStyle(
-                          color: Color(0xFF585252),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500)),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Sign Up',
+                      color: Color(0xFF585252)),
+                ),
+                SizedBox(
+                  width: 120,
+                ),
+                Text('Forgot Password?',
                     style: TextStyle(
-                        color: Color(0xFF2A63B9),
                         fontSize: 12,
-                        fontWeight: FontWeight.w600),
-                  )
-                ],
-              )
-            ],
-          )
-        ],
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF585252)))
+              ],
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Column(
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF2A63B9),
+                        minimumSize: Size(287, 50),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12))),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()));
+                    },
+                    child: Text('Log In',
+                        style: TextStyle(fontSize: 20, color: Colors.white))),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Don’t have an account?',
+                        style: TextStyle(
+                            color: Color(0xFF585252),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500)),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          color: Color(0xFF2A63B9),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600),
+                    )
+                  ],
+                )
+              ],
+            )
+          ],
+        )],
       ),
     );
   }
